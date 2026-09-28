@@ -37,18 +37,22 @@ window.__eaglercraftLoaderClient = {
     file: "net.peytonplayz585.eaglercraft.v1_12.client",
     cid: "bafybeidrnchyech7b26rqhm3tayt7p6mxvl23lzd4f5mcyqda7hbrzyal4",
     path: "",
-    download: "https://jsdelivr.net",
+    download: "classes.js",
     dlSize: 15601341,
-    gzip: true
+    gzip: false
 };
 
-// 4. Core Eaglercraft Launch Options Array mapping to local folder assets
+// 4. Core Eaglercraft Launch Options Array mapping to local folder assets + 60FPS engine tweaks
 window.eaglercraftXOpts = {
     demoMode: false,
     container: "game_frame",
-    assetsURI: "assets.epk",         // Corrected: Looks inside the current folder for the asset package
-    localesURI: "lang/en_US.lang",    // Corrected: Targets the sibling language directory directly
-    worldsDB: "worlds_main"
+    assetsURI: "assets.epk",         // Looks inside the current folder for the asset package
+    localesURI: "lang/en_US.lang",    // Targets the sibling language directory directly
+    worldsDB: "worlds_main",
+    fastRender: true,                 // Tells the engine loop to skip non-essential draw cycles
+    fixedFramerate: 60,               // Forces alignment with your iPad's internal display refresh rate
+    chunkUpdates: 1,                  // Stops the game from loading too many terrain blocks at once while moving
+    enableDynamicLights: false        // Hard-kills moving shadow updates to free up massive CPU threads
 };
 </script>
 
