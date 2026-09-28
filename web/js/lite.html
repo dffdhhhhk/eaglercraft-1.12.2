@@ -2,10 +2,11 @@
 <html style="width:100%;height:100%;background:black;">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-<title>Eaglercraft Lite</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Eaglercraft 1.12.2 Lite</title>
 
 <script>
+// 1. User-Agent Spoof to unlock desktop engine access features on iPad mobile browsers
 try {
     Object.defineProperty(navigator, "userAgent", {
         get: function() {
@@ -16,19 +17,53 @@ try {
 
 window.disableUserscripts = true;
 
+// 2. Hardware Canvas Acceleration Layer (Crucial for 60 FPS on iPad WebKit)
+const orgGetContext = HTMLCanvasElement.prototype.getContext;
+HTMLCanvasElement.prototype.getContext = function(type, attributes) {
+    if (type === 'webgl' || type === 'webgl2' || type === 'experimental-webgl') {
+        attributes = attributes || {};
+        attributes.antialias = false;            // Disables antialiasing to massively boost mobile frame fill-rates
+        attributes.powerPreference = 'high-performance'; // Forces iPadOS to give the canvas engine maximum power
+        attributes.desynchronized = true;         // Lowers latency by uncoupling input checks from draw ticks
+        attributes.preserveDrawingBuffer = false;   // Instantly flushes page memory cache pools
+    }
+    return orgGetContext.call(this, type, attributes);
+};
+
+// 3. Core Loader Deployment Framework Tracking Configuration
 window.__eaglercraftLoaderClient = {
     container: "game_frame",
     name: "Eaglercraft 1.12.2 Lite",
     file: "net.peytonplayz585.eaglercraft.v1_12.client",
     cid: "bafybeidrnchyech7b26rqhm3tayt7p6mxvl23lzd4f5mcyqda7hbrzyal4",
     path: "",
-    download: "https://cdn.jsdelivr.net/gh/PlanetDogeCodes/EaglerLite@main/source%20file/1-12source.gz",
+    download: "https://jsdelivr.net",
     dlSize: 15601341,
     gzip: true
 };
+
+// 4. Core Eaglercraft Launch Options Array mapping to local folder assets
+window.eaglercraftXOpts = {
+    demoMode: false,
+    container: "game_frame",
+    assetsURI: "assets.epk",         // Corrected: Looks inside the current folder for the asset package
+    localesURI: "lang/en_US.lang",    // Corrected: Targets the sibling language directory directly
+    worldsDB: "worlds_main"
+};
 </script>
 
-<script src="loader.js"></script>
+<!-- Link to the game's core execution binary files -->
+<script type="text/javascript" src="classes.js"></script>
+<script type="text/javascript">
+    // 5. Explicitly boot up the compiled TeaVM main execution engine loop
+    window.addEventListener("load", function() {
+        if (typeof main === "function") {
+            main();
+        } else {
+            console.error("[EaglerLite] Failed to locate main() loop inside classes.js");
+        }
+    });
+</script>
 </head>
 
 <body style="margin:0;width:100%;height:100%;overflow:hidden;background:black;">
